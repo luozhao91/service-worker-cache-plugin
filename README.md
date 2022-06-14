@@ -14,8 +14,9 @@ A plugin for loading assets by service-worker
 ## 插件使用
 ```
 安装插件: yarn/npm/pnpm等包管理工具都可
-
-pnpm i service-worker-cache-plugin --dev
+npm i service-worker-cache-plugin --dev
+yarn add service-worker-cache-plugin --dev
+pnpm add -D service-worker-cache-plugin
 
 配置:
     name: service-worker文件名称
@@ -73,4 +74,10 @@ configureWebpack: config => {
     }
     config.plugins = [...config.plugins, ...plugins];
   },
+```
+
+## 插件关联
+```
+参考: generate-service-worker-webpack-plugin
+项目需要在vite中使用，基于该插件修改
 ```
