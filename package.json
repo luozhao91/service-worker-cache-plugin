@@ -1,0 +1,50 @@
+{
+  "name": "service-worker-cache-plugin",
+  "version": "0.0.1",
+  "description": "A service-worker plugin",
+  "scripts": {
+    "dev": "pnpm run build",
+    "build": "tsup src/index.ts --dts --format cjs,esm",
+    "publish": "npm run build && npm publish"
+  },
+  "keywords": [
+    "vite",
+    "webpack",
+    "worker",
+    "service",
+    "service-worker",
+    "serviceWorker",
+    "plugin"
+  ],
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://git.huijiaoyun.com:10000/yyb/whty-fe/whty-template-cli.git"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.m.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.m.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "author": "whty-fe",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^17.0.35",
+    "@typescript-eslint/eslint-plugin": "^5.26.0",
+    "@typescript-eslint/parser": "^5.26.0",
+    "bumpp": "^7.1.1",
+    "eslint": "^8.16.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.6.2",
+    "terser": "^5.14.0",
+    "tsup": "^6.0.1",
+    "typescript": "^4.7.2",
+    "vite": "*"
+  }
+}
