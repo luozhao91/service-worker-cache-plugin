@@ -1,6 +1,6 @@
 {
   "name": "service-worker-cache-plugin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A service-worker plugin",
   "scripts": {
     "dev": "pnpm run build",
@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://git.huijiaoyun.com:10000/yyb/whty-fe/whty-template-cli.git"
+    "url": "https://github.com/luozhao91/service-worker-cache-plugin.git"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.m.js",
