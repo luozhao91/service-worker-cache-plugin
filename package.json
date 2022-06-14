@@ -1,6 +1,6 @@
 {
   "name": "service-worker-cache-plugin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A service-worker plugin",
   "scripts": {
     "dev": "pnpm run build",
