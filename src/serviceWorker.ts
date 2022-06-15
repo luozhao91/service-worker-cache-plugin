@@ -11,16 +11,15 @@ export async function createServiceWorkerCache(type: TPluginType, bundle, swOpti
   const hashFileName = swName + '.hash';
   let cacheFiles: string[] = [];
   for (const key in bundle) {
-    let source = '';
-    if (type === 'vite') {
-      source = bundle[key]['source'];
-    } else if (type === 'webpack') {
-      source = bundle[key].source();
-    }
     if (/\.html$/.test(key)) {
+      let source = '';
+      if (type === 'vite') {
+        source = bundle[key]['source'];
+      } else if (type === 'webpack') {
+        source = bundle[key].source();
+      }
       let swLinkJs = REGISTER as string;
-      swLinkJs = swLinkJs.replace(`@@SW_JS_PATH@@`, publicPath + name);
-      swLinkJs = swLinkJs.replace(`@@SW_HASH_FILE_PATH@@`, publicPath + hashFileName);
+      swLinkJs = swLinkJs.replace(`@@SW_JS_PATH@@`, name);
       swLinkJs = swLinkJs.replace(`@@SW_CACHE_HASH@@`, hash);
       const swLinkJsMin = await minify(swLinkJs);
       const html = source.replace(/(<\/head)/, `<script>${swLinkJsMin.code}</script>$1`);
@@ -45,7 +44,6 @@ export async function createServiceWorkerCache(type: TPluginType, bundle, swOpti
     else if (!swOptions.excache.test(key)) {
       cacheFiles.push(key);
     }
-
   }
   // 加入过滤函数，方便自定义筛选规则
   if (swOptions.filter) {
@@ -55,7 +53,8 @@ export async function createServiceWorkerCache(type: TPluginType, bundle, swOpti
   swJs = swJs.replace(`@@SW_CACHE_HASH@@`, `${hash}`);
   swJs = swJs.replace(`@@SW_CACHE_FILES@@`, `${JSON.stringify(cacheFiles)}`);
   swJs = swJs.replace(`@@SW_JS_NAME@@`, name);
-  swJs = swJs.replace(`@@SW_HASH_FILE_PATH@@`, publicPath + hashFileName);
+  swJs = swJs.replace(`@@CDN_URL@@`, publicPath);
+  swJs = swJs.replace(`@@SW_HASH_FILE_PATH@@`, hashFileName);
   swJs = swJs.replace(`@@SW_EFFECTIVE_TIME@@`, '' + swOptions.time);
   const swJsMin = await minify(swJs);
   const swCode = swJsMin.code as string | Uint8Array;

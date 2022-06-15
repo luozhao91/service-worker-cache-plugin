@@ -48,12 +48,14 @@ import { vitePluginServiceWorker } from 'service-worker-cache-plugin';
 ...
 
 webpack:
-已vue(vue-cli构建)项目为例:
+以 vue(vue-cli构建)项目为例:
 const { WebpackServiceWorkerPlugin } = require('service-worker-cache-plugin');
 
 configureWebpack: config => {
     const plugins = [
+      <!-- 其他插件 -->
     ];
+    <!-- 生产环境添加 -->
     if (IS_PROD) {
       plugins.push(
         new WebpackServiceWorkerPlugin({

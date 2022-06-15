@@ -56,7 +56,8 @@ window.SW_CACHE_HASH = '@@SW_CACHE_HASH@@';
 export const SW = `
 const SW_CACHE_HASH = '@@SW_CACHE_HASH@@';
 const SW_JS_NAME = '@@SW_JS_NAME@@';
-const PUBLIC_URL = self.serviceWorker.scriptURL.replace(SW_JS_NAME, '');
+const ASSET_PUBLIC_URL = self.serviceWorker.scriptURL.replace(SW_JS_NAME, '');
+const CDN_URL = '@@CDN_URL@@';
 const SW_CACHE_FILES = JSON.parse('@@SW_CACHE_FILES@@');
 let updateTime = 0;
 const effectiveTime = '@@SW_EFFECTIVE_TIME@@';
@@ -65,7 +66,7 @@ let swRespond = false;
 const verifyHash = function () {
   if (Date.now() - updateTime < Number(effectiveTime)) return;
   updateTime = Date.now();
-  fetch('@@SW_HASH_FILE_PATH@@', {
+  fetch(ASSET_PUBLIC_URL + '@@SW_HASH_FILE_PATH@@', {
     headers: {
       SW_NO_CACHE: 'true',
       'Cache-Control': 'no-cache',
@@ -169,7 +170,6 @@ self.addEventListener('message', function (evt) {
 self.addEventListener('fetch', function (evt) {
   const clientId = evt.clientId || evt.resultingClientId;
 
-  // 如果用户放弃使用此npm，则由此处触发 verifyHash 方法
   if (clientId !== nowClientId) {
     nowClientId = clientId;
     setTimeout(function () {
@@ -196,8 +196,7 @@ self.addEventListener('fetch', function (evt) {
           }
           // 其它文件需要匹配 SW_CACHE_FILES 中的路径决定是否缓存
           else if (LastModified) {
-            cache = SW_CACHE_FILES.includes(url.replace(PUBLIC_URL, ''));
-
+            cache = SW_CACHE_FILES.includes(url.replace(CDN_URL.indexOf('http') >= 0 ? CDN_URL : ASSET_PUBLIC_URL, ''));
             if (cache) {
               if (
                 ext === 'js' &&
