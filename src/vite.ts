@@ -13,7 +13,7 @@ export function vitePluginServiceWorker(option: TSwOption): PluginOption {
   swOptions.hash = option.hash || '' + +new Date();
   swOptions.version = option.version || '';
   swOptions.excache = option.excache || null;
-  swOptions.time = option.time || 10000;
+  swOptions.time = option.time || 1000 * 60 * 60;
   swOptions.filter = option.filter;
 
   return {

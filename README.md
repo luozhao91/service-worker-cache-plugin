@@ -78,8 +78,9 @@ configureWebpack: config => {
   },
 ```
 
-## 插件关联
+## 版本更新
+#### 0.0.5
 ```
-参考: generate-service-worker-webpack-plugin
-项目需要在vite中使用，基于该插件修改
+1.修改默认缓存时间
+2.修复未缓存html文件问题
 ```

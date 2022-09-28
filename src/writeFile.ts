@@ -126,26 +126,38 @@ const waitPageRespond = function () {
   }, 500);
 };
 
-self.addEventListener('install', function () {
+self.addEventListener('install', function (event) {
   self.skipWaiting();
-
+  event.waitUntil(
+		caches.keys().then(function (cacheNames) {
+			//删除过期的缓存
+			return Promise.all(
+				cacheNames.map(function (cacheName) {
+					if (cacheName != SW_CACHE_HASH) {
+						return caches.delete(cacheName);
+					}
+				}),
+			);
+		}),
+	);
 });
+
 
 /* 当此 sw.js 激活时触发 */
 self.addEventListener('activate', function (evt) {
-  evt.waitUntil(
-    caches.keys().then(function (cacheNames) {
-      return Promise.all(
-        cacheNames
-          .filter(function (cacheName) {
-            return cacheName != SW_CACHE_HASH;
-          })
-          .map(function (cacheName) {
-            return caches.delete(cacheName);
-          }),
-      );
-    }),
-  );
+  // evt.waitUntil(
+  //   caches.keys().then(function (cacheNames) {
+  //     return Promise.all(
+  //       cacheNames
+  //         .filter(function (cacheName) {
+  //           return cacheName != SW_CACHE_HASH;
+  //         })
+  //         .map(function (cacheName) {
+  //           return caches.delete(cacheName);
+  //         }),
+  //     );
+  //   }),
+  // );
 
 });
 
@@ -179,7 +191,7 @@ self.addEventListener('fetch', function (evt) {
 
   evt.respondWith(
     caches.match(evt.request).then(function (response) {
-      const SW_NO_CACHE = evt.request.headers.get('SW_NO_CACHE');
+      const SW_NO_CACHE = '' + evt.request.headers.get('SW_NO_CACHE');
       let contentType = '';
       if (response && SW_NO_CACHE !== 'true') {
         return response;
@@ -191,7 +203,7 @@ self.addEventListener('fetch', function (evt) {
         if (evt.request.method === 'GET') {
           const ext = url.split('.').pop();
           let cache = false;
-          if (contentType.indexOf('text/html') >= 0 && /\\/[^.]+$/.test(url)) {
+          if (contentType.indexOf('text/html') >= 0) {
             cache = true;
           }
           // 其它文件需要匹配 SW_CACHE_FILES 中的路径决定是否缓存

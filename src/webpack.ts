@@ -12,7 +12,7 @@ export class WebpackServiceWorkerPlugin {
       name: swOptions.name || 'sw',
       version: swOptions.version || '',
       excache: swOptions.excache || null,
-      time: swOptions.time || 10000,
+      time: swOptions.time || 1000 * 60 * 60,
       filter: swOptions.filter,
     };
   }

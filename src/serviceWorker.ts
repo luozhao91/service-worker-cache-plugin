@@ -58,6 +58,7 @@ export async function createServiceWorkerCache(type: TPluginType, bundle, swOpti
   swJs = swJs.replace(`@@SW_EFFECTIVE_TIME@@`, '' + swOptions.time);
   const swJsMin = await minify(swJs);
   const swCode = swJsMin.code as string | Uint8Array;
+  // const swCode = swJs;
 
   if (type === 'vite') {
     bundle[name] = {
